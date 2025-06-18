@@ -15,8 +15,11 @@ namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
 public static class ReferenceAssemblyCatalog
 {
     public static string Net80WithSystemRuntimeCaching => nameof(Net80WithSystemRuntimeCaching);
+
     public static string NetFramework462WithSystemRuntimeCaching => nameof(NetFramework462WithSystemRuntimeCaching);
+
     public static string Net80WithMicrosoftExtensionsCachingMemory => nameof(Net80WithMicrosoftExtensionsCachingMemory);
+
     public static string NetFramework462WithMicrosoftExtensionsCachingMemory => nameof(NetFramework462WithMicrosoftExtensionsCachingMemory);
 
     /// <summary>
@@ -49,6 +52,6 @@ public static class ReferenceAssemblyCatalog
             {
                 nameof(NetFramework462WithMicrosoftExtensionsCachingMemory),
                 ReferenceAssemblies.NetFramework.Net462.Default.AddPackages([new PackageIdentity("Microsoft.Extensions.Caching.Memory", "8.0.0")])
-            }
+            },
         };
 }

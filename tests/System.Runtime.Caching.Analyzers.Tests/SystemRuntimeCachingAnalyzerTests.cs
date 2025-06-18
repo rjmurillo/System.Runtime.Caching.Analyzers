@@ -11,22 +11,22 @@ public class SystemRuntimeCachingAnalyzerTests
     {
         IEnumerable<object[]> net80SystemRuntimeCaching = new object[][]
         {
-            ["""var cache = {|SRC1000:new MemoryCache("test")|};"""]
+            ["""var cache = {|SRC1000:new MemoryCache("test")|};"""],
         }.WithSystemRuntimeCachingNamespaces().WithNet80SystemRuntimeCaching();
-        
+
         IEnumerable<object[]> net80MicrosoftExtensionsCachingMemory = new object[][]
         {
-            ["""var cache = new MemoryCache(new MemoryCacheOptions());"""]
+            ["""var cache = new MemoryCache(new MemoryCacheOptions());"""],
         }.WithMicrosoftExtensionsCachingMemoryNamespaces().WithNet80MicrosoftExtensionsCachingMemory();
 
         IEnumerable<object[]> framework462SystemRuntimeCaching = new object[][]
         {
-            ["""var cache = new MemoryCache("test");"""]
+            ["""var cache = new MemoryCache("test");"""],
         }.WithSystemRuntimeCachingNamespaces().WithFramework462SystemRuntimeCaching();
 
         IEnumerable<object[]> framework462MicrosoftExtensionsCachingMemory = new object[][]
         {
-            ["""var cache = new MemoryCache(new MemoryCacheOptions());"""]
+            ["""var cache = new MemoryCache(new MemoryCacheOptions());"""],
         }.WithMicrosoftExtensionsCachingMemoryNamespaces().WithFramework462MicrosoftExtensionsCachingMemory();
 
         return net80SystemRuntimeCaching
@@ -34,7 +34,7 @@ public class SystemRuntimeCachingAnalyzerTests
             .Union(framework462SystemRuntimeCaching)
             .Union(framework462MicrosoftExtensionsCachingMemory);
     }
-    
+
     [Theory]
     [MemberData(nameof(MemoryCacheTestData))]
     public async Task FlagsMemoryCacheUsageInNetCoreProjectAsync(string referenceAssemblyGroup, string @namespace, string code)
