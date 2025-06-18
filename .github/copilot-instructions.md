@@ -26,6 +26,7 @@ You are an experienced .NET developer working on Roslyn analyzers for the Moq fr
 If you encounter:
 
 - The versioning is causing issues This may show up in your build output as error `MSB4018: The "Nerdbank.GitVersioning.Tasks.GetBuildVersion" task failed unexpectedly.` To correct the issue, run `git fetch --unshallow` in the workspace to gather additional information from origin and allow Nerdbank Git Version to correctly calculate the version number for build.
+- When using PowerShell, there is a known issue with PSReadLine that may give an error similar to `System.ArgumentOutOfRangeException: The value must be greater than or equal to zero and less than the console's buffer size in that dimension.` When running command line, use CMD instead of PowerShell to workaround the PSReadLine buffer bug.
 
 ---
 
