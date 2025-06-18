@@ -3,27 +3,44 @@
 namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
 
 /// <summary>
-/// The testing framework does heavy work to resolve references for set of <see cref="ReferenceAssemblies"/>, including potentially
-/// running the NuGet client to download packages. This class caches the ReferenceAssemblies class (which is thread-safe), so that
-/// package resolution only happens once for a given configuration.
+/// Provides a centralized, thread-safe catalog of commonly used <see cref="ReferenceAssemblies"/> configurations for analyzer tests.
+/// This class ensures that reference assembly resolution and NuGet package downloads are performed only once per configuration,
+/// improving test performance and reliability. It is designed to work around Visual Studio Test Explorer limitations by exposing
+/// primitive string keys for each configuration, allowing test cases to remain distinct and debuggable.
 /// </summary>
 /// <remarks>
-/// It would be more straightforward to pass around ReferenceAssemblies instances directly, but using non-primitive types causes
-/// Visual Studio's Test Explorer to collapse all test cases down to a single entry, which makes it harder to see which test cases
-/// are failing or debug a single test case.
+/// Use this catalog to retrieve preconfigured <see cref="ReferenceAssemblies"/> instances for different .NET targets and caching packages
+/// when writing analyzer or code fix tests. This avoids redundant package resolution and supports clear test case reporting.
 /// </remarks>
 public static class ReferenceAssemblyCatalog
 {
+    /// <summary>
+    /// Gets the identifier for .NET 8.0 reference assemblies with the System.Runtime.Caching package added.
+    /// Use this for tests targeting .NET 8 with System.Runtime.Caching APIs.
+    /// </summary>
     public static string Net80WithSystemRuntimeCaching => nameof(Net80WithSystemRuntimeCaching);
 
+    /// <summary>
+    /// Gets the identifier for .NET Framework 4.6.2 reference assemblies with the System.Runtime.Caching package added.
+    /// Use this for tests targeting .NET Framework 4.6.2 with System.Runtime.Caching APIs.
+    /// </summary>
     public static string NetFramework462WithSystemRuntimeCaching => nameof(NetFramework462WithSystemRuntimeCaching);
 
+    /// <summary>
+    /// Gets the identifier for .NET 8.0 reference assemblies with the Microsoft.Extensions.Caching.Memory package added.
+    /// Use this for tests targeting .NET 8 with Microsoft.Extensions.Caching.Memory APIs.
+    /// </summary>
     public static string Net80WithMicrosoftExtensionsCachingMemory => nameof(Net80WithMicrosoftExtensionsCachingMemory);
 
+    /// <summary>
+    /// Gets the identifier for .NET Framework 4.6.2 reference assemblies with the Microsoft.Extensions.Caching.Memory package added.
+    /// Use this for tests targeting .NET Framework 4.6.2 with Microsoft.Extensions.Caching.Memory APIs.
+    /// </summary>
     public static string NetFramework462WithMicrosoftExtensionsCachingMemory => nameof(NetFramework462WithMicrosoftExtensionsCachingMemory);
 
     /// <summary>
     /// Gets a catalog of reference assemblies grouped by their respective identifiers.
+    /// Use this dictionary to retrieve a <see cref="ReferenceAssemblies"/> instance for a given configuration key.
     /// </summary>
     /// <remarks>
     /// The catalog provides a mapping between string identifiers and corresponding

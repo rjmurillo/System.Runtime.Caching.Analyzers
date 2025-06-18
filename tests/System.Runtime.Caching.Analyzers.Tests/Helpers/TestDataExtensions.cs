@@ -1,12 +1,20 @@
 ﻿namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
 
+/// <summary>
+/// Provides extension methods for composing and enriching test data sets with reference assembly and namespace information
+/// required for analyzer and code fix tests targeting different caching APIs and .NET versions.
+/// </summary>
+/// <remarks>
+/// These helpers allow test authors to fluently add reference assembly group identifiers and required namespace imports to
+/// <c>IEnumerable&lt;object[]&gt;</c> test data. This enables parameterized tests to cover multiple target frameworks and caching implementations
+/// without duplicating boilerplate setup code.
+/// </remarks>
 public static class TestDataExtensions
 {
     /// <summary>
-    /// Add the .NET 8.0 System.Runtime.Caching reference to the test data.
+    /// Adds the .NET 8.0 System.Runtime.Caching reference group identifier to each test data row.
+    /// Use for tests that require System.Runtime.Caching APIs on .NET 8.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithNet80SystemRuntimeCaching(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
@@ -16,10 +24,9 @@ public static class TestDataExtensions
     }
 
     /// <summary>
-    /// Add the .NET Framework 4.6.2 System.Runtime.Caching reference to the test data.
+    /// Adds the .NET Framework 4.6.2 System.Runtime.Caching reference group identifier to each test data row.
+    /// Use for tests that require System.Runtime.Caching APIs on .NET Framework 4.6.2.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithFramework462SystemRuntimeCaching(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
@@ -29,10 +36,9 @@ public static class TestDataExtensions
     }
 
     /// <summary>
-    /// Add the System.Runtime.Caching namespace to the test data.
+    /// Adds a <c>using System.Runtime.Caching;</c> namespace import to each test data row.
+    /// Use for tests that require the System.Runtime.Caching namespace in the source code.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithSystemRuntimeCachingNamespaces(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
@@ -42,10 +48,9 @@ public static class TestDataExtensions
     }
 
     /// <summary>
-    /// Add the Microsoft.Extensions.Caching.Memory namespace to the test data.
+    /// Adds a <c>using Microsoft.Extensions.Caching.Memory;</c> namespace import to each test data row.
+    /// Use for tests that require the Microsoft.Extensions.Caching.Memory namespace in the source code.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithMicrosoftExtensionsCachingMemoryNamespaces(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
@@ -55,10 +60,9 @@ public static class TestDataExtensions
     }
 
     /// <summary>
-    /// Add the .NET 8.0 Microsoft.Extensions.Caching.Memory reference to the test data.
+    /// Adds the .NET 8.0 Microsoft.Extensions.Caching.Memory reference group identifier to each test data row.
+    /// Use for tests that require Microsoft.Extensions.Caching.Memory APIs on .NET 8.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithNet80MicrosoftExtensionsCachingMemory(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
@@ -68,10 +72,9 @@ public static class TestDataExtensions
     }
 
     /// <summary>
-    /// Add the .NET Framework 4.6.2 Microsoft.Extensions.Caching.Memory reference to the test data.
+    /// Adds the .NET Framework 4.6.2 Microsoft.Extensions.Caching.Memory reference group identifier to each test data row.
+    /// Use for tests that require Microsoft.Extensions.Caching.Memory APIs on .NET Framework 4.6.2.
     /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
     public static IEnumerable<object[]> WithFramework462MicrosoftExtensionsCachingMemory(this IEnumerable<object[]> data)
     {
         foreach (object[] item in data)
