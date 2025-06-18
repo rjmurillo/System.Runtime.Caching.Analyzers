@@ -1,0 +1,14 @@
+﻿<package>
+  <metadata>
+    <id>System.Runtime.Caching.Analyzers</id>
+    <version>********</version>
+    <authors>rjmurillo</authors>
+    <description>Analyzer to flag usage of System.Runtime.Caching.MemoryCache in .NET Core+ projects.</description>
+    <repository type="git" url="https://github.com/********/System.Runtime.Caching.Analyzers.git" branch="********" commit="****************************************" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="ExhaustiveMatching.Analyzer" version="0.5.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

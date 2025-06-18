@@ -1,0 +1,6 @@
+﻿/
+|-- System.Runtime.Caching.Analyzers.nuspec
+|-- lib
+|   |-- netstandard2.0
+|   |   |-- System.Runtime.Caching.Analyzers.dll
+|   |   |-- System.Runtime.Caching.Analyzers.xml

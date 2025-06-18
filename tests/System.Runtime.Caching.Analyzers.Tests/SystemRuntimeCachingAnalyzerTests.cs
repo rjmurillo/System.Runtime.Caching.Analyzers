@@ -1,61 +1,38 @@
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
-using Xunit;
+using System.Runtime.Caching.Analyzers.Tests.Helpers;
+using Verifier = System.Runtime.Caching.Analyzers.Tests.Helpers.AnalyzerVerifier<System.Runtime.Caching.Analyzers.SystemRuntimeCachingAnalyzer>;
 
-namespace System.Runtime.Caching.Analyzers.Tests
+namespace System.Runtime.Caching.Analyzers.Tests;
+
+/// <summary>
+/// Unit tests for SystemRuntimeCachingAnalyzer.
+/// </summary>
+public class SystemRuntimeCachingAnalyzerTests
 {
-    /// <summary>
-    /// Unit tests for SystemRuntimeCachingAnalyzer.
-    /// </summary>
-    public class SystemRuntimeCachingAnalyzerTests
+    public static IEnumerable<object[]> MemoryCacheTestData()
     {
-        private static DiagnosticResult ExpectedDiagnostic(int line, int column) =>
-            new DiagnosticResult(SystemRuntimeCachingAnalyzer.DiagnosticId, DiagnosticSeverity.Warning)
-                .WithSpan(line, column, line, column + 11); // "MemoryCache" length
-
-        [Fact]
-        public async Task FlagsMemoryCacheUsageInNetCoreProject()
+        return new object[][]
         {
-            var testCode = @"using System.Runtime.Caching;
-
-class C
-{
-    void M()
+            ["""var cache = {|SRC1000:new MemoryCache("test")|};"""]
+        }.WithSystemRuntimeCachingNamespaces().WithSystemRuntimeCaching();
+    }
+    
+    [Theory]
+    [MemberData(nameof(MemoryCacheTestData))]
+    public async Task FlagsMemoryCacheUsageInNetCoreProjectAsync(string referenceAssemblyGroup, string @namespace, string code)
     {
-        var cache = new MemoryCache(\"test\");
-    }
-}";
-            var test = new CSharpAnalyzerTest<SystemRuntimeCachingAnalyzer, XUnitVerifier>
-            {
-                TestCode = testCode,
-                ReferenceAssemblies = ReferenceAssemblies.Net.Net50
-            };
-            test.ExpectedDiagnostics.Add(ExpectedDiagnostic(7, 22));
-            await test.RunAsync();
-        }
+        await Verifier.VerifyAnalyzerAsync(
+            $$"""
+              {{@namespace}}
 
-        [Fact]
-        public async Task DoesNotFlagMemoryCacheUsageInNetFramework()
-        {
-            var testCode = @"using System.Runtime.Caching;
+              class C
+              {
+                  void M()
+                  {
+                      {{code}}
+                  }
 
-class C
-{
-    void M()
-    {
-        var cache = new MemoryCache(\"test\");
+              }
+              """,
+            referenceAssemblyGroup);
     }
-}";
-            var test = new CSharpAnalyzerTest<SystemRuntimeCachingAnalyzer, XUnitVerifier>
-            {
-                TestCode = testCode,
-                ReferenceAssemblies = ReferenceAssemblies.NetFramework.Net48
-            };
-            // No diagnostics expected
-            await test.RunAsync();
-        }
-    }
-} 
+}
