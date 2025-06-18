@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace System.Runtime.Caching.Analyzers
 {
@@ -20,14 +22,66 @@ namespace System.Runtime.Caching.Analyzers
             isEnabledByDefault: true,
             description: "System.Runtime.Caching.MemoryCache is a compatibility bridge for porting from .NET Framework. Prefer Microsoft.Extensions.Caching.Memory in .NET Core+.");
 
+        /// <inheritdoc />
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        /// <inheritdoc />
         public override void Initialize(AnalysisContext context)
         {
-            // Failure path: If context is null, throw immediately.
             if (context == null)
-                throw new System.ArgumentNullException(nameof(context));
-            // TODO: Register actions to analyze symbol and syntax usage.
+                throw new ArgumentNullException(nameof(context));
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterCompilationStartAction(static compilationContext =>
+            {
+                // Only analyze if System.Runtime.Caching is referenced
+                var memoryCacheType = compilationContext.Compilation.GetTypeByMetadataName("System.Runtime.Caching.MemoryCache");
+                if (memoryCacheType is null)
+                    return;
+
+                // Only analyze if not targeting .NET Framework (guard: check for netcore or net)
+                var runtimeAssembly = compilationContext.Compilation.Assembly.Identity.Name;
+                if (runtimeAssembly.Contains("Framework", StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                compilationContext.RegisterOperationAction(
+                    ctx => AnalyzeObjectCreation(ctx, memoryCacheType),
+                    OperationKind.ObjectCreation);
+                compilationContext.RegisterOperationAction(
+                    ctx => AnalyzeMemberReference(ctx, memoryCacheType),
+                    OperationKind.FieldReference,
+                    OperationKind.PropertyReference,
+                    OperationKind.MethodReference);
+            });
+        }
+
+        private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
+        {
+            if (context.Operation is not IObjectCreationOperation creation)
+                return;
+            if (SymbolEqualityComparer.Default.Equals(creation.Type, memoryCacheType))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, creation.Syntax.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeMemberReference(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
+        {
+            IOperation op = context.Operation;
+            ITypeSymbol? containingType = op switch
+            {
+                IFieldReferenceOperation field => field.Field.ContainingType,
+                IPropertyReferenceOperation prop => prop.Property.ContainingType,
+                IMethodReferenceOperation method => method.Method.ContainingType,
+                _ => null
+            };
+            if (containingType is null)
+                return;
+            if (SymbolEqualityComparer.Default.Equals(containingType, memoryCacheType))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, op.Syntax.GetLocation()));
+            }
         }
     }
 } 
