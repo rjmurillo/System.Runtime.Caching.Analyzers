@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+  </PropertyGroup>
+
+  <!-- Properties that need to be available early for NuGet pack targets -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'System.Runtime.Caching.Analyzers'">
+    <Description>Roslyn analyzer that helps to flag usage of .NET Framework bridge package for MemoryCache in .NET Core applications.</Description>
+  </PropertyGroup>
+
+
+  <Import Project="build/targets/artifacts/Artifacts.props" />
+  <Import Project="build/targets/compiler/Compiler.props" />
+  <Import Project="build/targets/reproducible/Reproducible.props" />
+  <Import Project="build/targets/versioning/Versioning.props" />
+  <Import Project="build/targets/tests/Tests.props" />
+  <Import Project="build/targets/codeanalysis/CodeAnalysis.props" />
+</Project>
