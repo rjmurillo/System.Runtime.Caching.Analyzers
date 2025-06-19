@@ -38,32 +38,25 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(static compilationContext =>
-        {
-            // Only analyze if System.Runtime.Caching is referenced
-            INamedTypeSymbol? memoryCacheType = compilationContext.Compilation.GetTypeByMetadataName("System.Runtime.Caching.MemoryCache");
-            if (memoryCacheType is null)
-            {
-                return;
-            }
+        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+    }
 
-            compilationContext.RegisterOperationAction(
-                ctx => AnalyzeObjectCreation(ctx, memoryCacheType),
-                OperationKind.ObjectCreation);
-            compilationContext.RegisterOperationAction(
-                ctx => AnalyzeMemberReference(ctx, memoryCacheType),
-                OperationKind.FieldReference,
-                OperationKind.PropertyReference,
-                OperationKind.MethodReference);
-        });
+    private static void RegisterCompilationStartAction(CompilationStartAnalysisContext compilationContext)
+    {
+        KnownSymbols knownSymbols = new(compilationContext.Compilation);
+
+        // Only analyze if System.Runtime.Caching is referenced
+        INamedTypeSymbol? memoryCacheType = knownSymbols.SystemRuntimeCachingMemoryCache;
+        if (memoryCacheType is null)
+        {
+            return;
+        }
+
+        compilationContext.RegisterOperationAction(ctx => AnalyzeObjectCreation(ctx, memoryCacheType), OperationKind.ObjectCreation);
+        compilationContext.RegisterOperationAction(ctx => AnalyzeMemberReference(ctx, memoryCacheType), OperationKind.FieldReference, OperationKind.PropertyReference, OperationKind.MethodReference);
     }
 
     private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
