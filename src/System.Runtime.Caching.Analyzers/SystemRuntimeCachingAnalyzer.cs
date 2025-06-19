@@ -66,7 +66,7 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (!SymbolEqualityComparer.Default.Equals(creation.Type, memoryCacheType))
+        if (!ITypeSymbolExtensions.IsOrDerivedFrom(creation.Type, memoryCacheType))
         {
             return;
         }
