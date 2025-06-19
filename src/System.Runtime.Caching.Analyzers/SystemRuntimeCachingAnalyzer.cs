@@ -56,7 +56,6 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         }
 
         compilationContext.RegisterOperationAction(ctx => AnalyzeObjectCreation(ctx, memoryCacheType), OperationKind.ObjectCreation);
-        compilationContext.RegisterOperationAction(ctx => AnalyzeMemberReference(ctx, memoryCacheType), OperationKind.FieldReference, OperationKind.PropertyReference, OperationKind.MethodReference);
     }
 
     private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
@@ -78,34 +77,5 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         }
 
         context.ReportDiagnostic(Diagnostic.Create(Rule, creation.Syntax.GetLocation()));
-    }
-
-    private static void AnalyzeMemberReference(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
-    {
-        IOperation op = context.Operation;
-        ITypeSymbol? containingType = op switch
-        {
-            IFieldReferenceOperation field => field.Field.ContainingType,
-            IPropertyReferenceOperation prop => prop.Property.ContainingType,
-            IMethodReferenceOperation method => method.Method.ContainingType,
-            _ => null,
-        };
-        if (containingType is null)
-        {
-            return;
-        }
-
-        if (!ITypeSymbolExtensions.IsOrDerivedFrom(containingType, memoryCacheType))
-        {
-            return;
-        }
-
-        // Only analyze if targeting .NET Core+ (not .NET Framework)
-        if (context.Compilation.IsTargetingNetFramework() == true)
-        {
-            return;
-        }
-
-        context.ReportDiagnostic(Diagnostic.Create(Rule, op.Syntax.GetLocation()));
     }
 }
