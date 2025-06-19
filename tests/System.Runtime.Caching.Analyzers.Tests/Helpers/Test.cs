@@ -17,7 +17,7 @@ internal class Test<TAnalyzer, TCodeFixProvider> : CSharpCodeFixTest<TAnalyzer, 
 {
     public Test()
     {
-        // Add Moq and some common usings to all test cases to avoid test authoring errors.
+        // Add some common usings to all test cases to avoid test authoring errors.
         const string globalUsings =
             """
             global using System;
