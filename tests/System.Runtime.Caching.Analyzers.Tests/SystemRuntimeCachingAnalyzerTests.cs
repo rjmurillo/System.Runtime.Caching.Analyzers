@@ -37,7 +37,7 @@ public class SystemRuntimeCachingAnalyzerTests
 
     [Theory]
     [MemberData(nameof(MemoryCacheTestData))]
-    public async Task FlagsMemoryCacheUsageInNetCoreProjec(string referenceAssemblyGroup, string @namespace, string code)
+    public async Task FlagsMemoryCacheUsageInNetCoreProject(string referenceAssemblyGroup, string @namespace, string code)
     {
         await Verifier.VerifyAnalyzerAsync(
             $$"""
