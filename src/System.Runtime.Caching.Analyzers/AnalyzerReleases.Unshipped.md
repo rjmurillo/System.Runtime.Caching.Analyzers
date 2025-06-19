@@ -1,3 +1,6 @@
-### Unshipped
+### Unshipped; Unshipped analyzer release
+; https://github.com/dotnet/roslyn-analyzers/blob/main/src/Microsoft.CodeAnalysis.Analyzers/ReleaseTrackingAnalyzers.Help.md
 
-#### SRC1000: Avoid System.Runtime.Caching.MemoryCache in .NET Core+ 
+### New Rules
+Rule ID | Category | Severity | Notes
+--------|----------|----------|-------
