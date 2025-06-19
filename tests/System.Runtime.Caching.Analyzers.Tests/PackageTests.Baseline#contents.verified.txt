@@ -1,0 +1,8 @@
+﻿/
+|-- README.md
+|-- System.Runtime.Caching.Analyzers.nuspec
+|-- analyzers
+|   |-- dotnet
+|   |   |-- cs
+|   |   |   |-- Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+|   |   |   |-- System.Runtime.Caching.Analyzers.dll

@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AAE06F40-A25C-4856-AE2C-E463B5163FEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Runtime.Caching.Analyzers", "src\System.Runtime.Caching.Analyzers\System.Runtime.Caching.Analyzers.csproj", "{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1EEA4AA8-6DBD-4772-8806-6627621E03D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Runtime.Caching.Analyzers.Tests", "tests\System.Runtime.Caching.Analyzers.Tests\System.Runtime.Caching.Analyzers.Tests.csproj", "{15B72726-C052-4BB3-823D-F7CB2D4C0D43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B72726-C052-4BB3-823D-F7CB2D4C0D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B72726-C052-4BB3-823D-F7CB2D4C0D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B72726-C052-4BB3-823D-F7CB2D4C0D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B72726-C052-4BB3-823D-F7CB2D4C0D43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B2EDEEF-7C19-435D-ADA1-D25C63E2325F} = {AAE06F40-A25C-4856-AE2C-E463B5163FEF}
+		{15B72726-C052-4BB3-823D-F7CB2D4C0D43} = {1EEA4AA8-6DBD-4772-8806-6627621E03D4}
+	EndGlobalSection
+EndGlobal
