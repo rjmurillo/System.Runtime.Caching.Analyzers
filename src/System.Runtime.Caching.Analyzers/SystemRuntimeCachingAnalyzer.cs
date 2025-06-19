@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -27,7 +28,8 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         category: "Compatibility",
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "System.Runtime.Caching.MemoryCache is a compatibility bridge for porting from .NET Framework. Prefer Microsoft.Extensions.Caching.Memory in .NET Core+.");
+        description: "System.Runtime.Caching.MemoryCache is a compatibility bridge for porting from .NET Framework. Prefer Microsoft.Extensions.Caching.Memory in .NET Core+.",
+        helpLinkUri: $"https://github.com/rjmurillo/system.runtime.caching.analyzers/blob/{ThisAssembly.GitCommitId}/docs/rules/{DiagnosticId}.md");
 #pragma warning restore ECS1300
 
     /// <inheritdoc />
@@ -53,11 +55,8 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
                 return;
             }
 
-            // Only analyze if not targeting .NET Framework (guard: check for netcore or net)
-            string runtimeAssembly = compilationContext.Compilation.Assembly.Identity.Name;
-#pragma warning disable ECS0900
-            if (runtimeAssembly.Contains("Framework", StringComparison.OrdinalIgnoreCase))
-#pragma warning restore ECS0900
+            // Only analyze if targeting .NET Core+ (not .NET Framework)
+            if (IsTargetingNetFramework(compilationContext.Compilation))
             {
                 return;
             }
@@ -71,6 +70,22 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
                 OperationKind.PropertyReference,
                 OperationKind.MethodReference);
         });
+    }
+
+    /// <summary>
+    /// Determines if the compilation is targeting .NET Framework.
+    /// </summary>
+    /// <param name="compilation">The compilation to check.</param>
+    /// <returns>True if targeting .NET Framework, false otherwise.</returns>
+    private static bool IsTargetingNetFramework(Compilation compilation)
+    {
+        // Use ReferencedAssemblyNames for robust detection in Roslyn test harness
+        IEnumerable<AssemblyIdentity> referencedNames = compilation.ReferencedAssemblyNames;
+        bool hasMscorlib = referencedNames.Any(a => string.Equals(a.Name, "mscorlib", StringComparison.Ordinal));
+        bool hasSystemPrivateCoreLib = referencedNames.Any(a => string.Equals(a.Name, "System.Private.CoreLib", StringComparison.Ordinal));
+
+        // .NET Framework projects typically have mscorlib and not System.Private.CoreLib
+        return hasMscorlib && !hasSystemPrivateCoreLib;
     }
 
     private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
