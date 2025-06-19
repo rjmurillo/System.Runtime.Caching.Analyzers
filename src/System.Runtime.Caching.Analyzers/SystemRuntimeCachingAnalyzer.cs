@@ -55,12 +55,6 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
                 return;
             }
 
-            // Only analyze if targeting .NET Core+ (not .NET Framework)
-            if (IsTargetingNetFramework(compilationContext.Compilation))
-            {
-                return;
-            }
-
             compilationContext.RegisterOperationAction(
                 ctx => AnalyzeObjectCreation(ctx, memoryCacheType),
                 OperationKind.ObjectCreation);
@@ -72,20 +66,34 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         });
     }
 
-    /// <summary>
-    /// Determines if the compilation is targeting .NET Framework.
-    /// </summary>
-    /// <param name="compilation">The compilation to check.</param>
-    /// <returns>True if targeting .NET Framework, false otherwise.</returns>
-    private static bool IsTargetingNetFramework(Compilation compilation)
+    public static bool? IsTargetingNetFramework(Compilation compilation)
     {
-        // Use ReferencedAssemblyNames for robust detection in Roslyn test harness
-        IEnumerable<AssemblyIdentity> referencedNames = compilation.ReferencedAssemblyNames;
-        bool hasMscorlib = referencedNames.Any(a => string.Equals(a.Name, "mscorlib", StringComparison.Ordinal));
-        bool hasSystemPrivateCoreLib = referencedNames.Any(a => string.Equals(a.Name, "System.Private.CoreLib", StringComparison.Ordinal));
+        var objectType = compilation.GetSpecialType(SpecialType.System_Object);
+        var coreAssembly = objectType.ContainingAssembly;
 
-        // .NET Framework projects typically have mscorlib and not System.Private.CoreLib
-        return hasMscorlib && !hasSystemPrivateCoreLib;
+        var identity = coreAssembly.Identity;
+        var name = identity.Name;
+
+        // System.Private.CoreLib = .NET Core / .NET 5+
+        // mscorlib = .NET Framework (but may still be present in .NET Core test setups)
+        if (name == "System.Private.CoreLib")
+            return false;
+
+        if (name == "mscorlib")
+        {
+            var metadata = coreAssembly.Locations.FirstOrDefault()?.MetadataModule?.Name ?? "";
+
+            // Heuristic: check file path or version
+            if (metadata.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase) ||
+                identity.Version >= new Version(5, 0))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return null;
     }
 
     private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
@@ -95,10 +103,18 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (SymbolEqualityComparer.Default.Equals(creation.Type, memoryCacheType))
+        if (!SymbolEqualityComparer.Default.Equals(creation.Type, memoryCacheType))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rule, creation.Syntax.GetLocation()));
+            return;
         }
+
+        // Only analyze if targeting .NET Core+ (not .NET Framework)
+        if (IsTargetingNetFramework(context.Compilation) == true)
+        {
+            return;
+        }
+            
+        context.ReportDiagnostic(Diagnostic.Create(Rule, creation.Syntax.GetLocation()));
     }
 
     private static void AnalyzeMemberReference(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
@@ -116,9 +132,17 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (SymbolEqualityComparer.Default.Equals(containingType, memoryCacheType))
+        if (!SymbolEqualityComparer.Default.Equals(containingType, memoryCacheType))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rule, op.Syntax.GetLocation()));
+            return;
         }
+
+        // Only analyze if targeting .NET Core+ (not .NET Framework)
+        if (IsTargetingNetFramework(context.Compilation) == true)
+        {
+            return;
+        }
+
+        context.ReportDiagnostic(Diagnostic.Create(Rule, op.Syntax.GetLocation()));
     }
 }
