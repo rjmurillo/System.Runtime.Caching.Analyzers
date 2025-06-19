@@ -68,11 +68,11 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
 
     public static bool? IsTargetingNetFramework(Compilation compilation)
     {
-        var objectType = compilation.GetSpecialType(SpecialType.System_Object);
-        var coreAssembly = objectType.ContainingAssembly;
+        INamedTypeSymbol objectType = compilation.GetSpecialType(SpecialType.System_Object);
+        IAssemblySymbol? coreAssembly = objectType.ContainingAssembly;
 
-        var identity = coreAssembly.Identity;
-        var name = identity.Name;
+        AssemblyIdentity identity = coreAssembly.Identity;
+        string name = identity.Name;
 
         // System.Private.CoreLib = .NET Core / .NET 5+
         // mscorlib = .NET Framework (but may still be present in .NET Core test setups)
@@ -81,7 +81,7 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
 
         if (name == "mscorlib")
         {
-            var metadata = coreAssembly.Locations.FirstOrDefault()?.MetadataModule?.Name ?? "";
+            string metadata = coreAssembly.Locations.FirstOrDefault()?.MetadataModule?.Name ?? "";
 
             // Heuristic: check file path or version
             if (metadata.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase) ||
