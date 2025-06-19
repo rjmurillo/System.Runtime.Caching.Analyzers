@@ -66,36 +66,6 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         });
     }
 
-    public static bool? IsTargetingNetFramework(Compilation compilation)
-    {
-        INamedTypeSymbol objectType = compilation.GetSpecialType(SpecialType.System_Object);
-        IAssemblySymbol? coreAssembly = objectType.ContainingAssembly;
-
-        AssemblyIdentity identity = coreAssembly.Identity;
-        string name = identity.Name;
-
-        // System.Private.CoreLib = .NET Core / .NET 5+
-        // mscorlib = .NET Framework (but may still be present in .NET Core test setups)
-        if (name == "System.Private.CoreLib")
-            return false;
-
-        if (name == "mscorlib")
-        {
-            string metadata = coreAssembly.Locations.FirstOrDefault()?.MetadataModule?.Name ?? "";
-
-            // Heuristic: check file path or version
-            if (metadata.Contains("Microsoft.NETCore.App", StringComparison.OrdinalIgnoreCase) ||
-                identity.Version >= new Version(5, 0))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        return null;
-    }
-
     private static void AnalyzeObjectCreation(OperationAnalysisContext context, INamedTypeSymbol memoryCacheType)
     {
         if (context.Operation is not IObjectCreationOperation creation)
@@ -109,11 +79,11 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         }
 
         // Only analyze if targeting .NET Core+ (not .NET Framework)
-        if (IsTargetingNetFramework(context.Compilation) == true)
+        if (context.Compilation.IsTargetingNetFramework() == true)
         {
             return;
         }
-            
+
         context.ReportDiagnostic(Diagnostic.Create(Rule, creation.Syntax.GetLocation()));
     }
 
@@ -138,7 +108,7 @@ public sealed class SystemRuntimeCachingAnalyzer : DiagnosticAnalyzer
         }
 
         // Only analyze if targeting .NET Core+ (not .NET Framework)
-        if (IsTargetingNetFramework(context.Compilation) == true)
+        if (context.Compilation.IsTargetingNetFramework() == true)
         {
             return;
         }
