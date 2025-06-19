@@ -19,6 +19,6 @@ internal class KnownSymbols(WellKnownTypeProvider typeProvider)
     }
 
     protected WellKnownTypeProvider TypeProvider { get; } = typeProvider;
-    
+
     public INamedTypeSymbol? SystemRuntimeCachingMemoryCache => TypeProvider.GetOrCreateTypeByMetadataName("System.Runtime.Caching.MemoryCache");
 }
