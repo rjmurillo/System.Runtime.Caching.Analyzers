@@ -4,12 +4,12 @@ using Microsoft.CodeAnalysis;
 namespace System.Runtime.Caching.Analyzers;
 
 /// <summary>
-/// Main entrypoint to access well-known symbols for the analyzer.
-/// This class handles caching to prevent multiple lookups for the same symbol.
+/// <p>Main entrypoint to access well-known symbols for the analyzer.
+/// This class handles caching to prevent multiple lookups for the same symbol.</p>
 ///
-/// It returns a type derived from <see cref="ISymbol"/> in all cases. Use the
+/// <p>It returns a type derived from <see cref="ISymbol"/> in all cases. Use the
 /// <seealso cref="ISymbol.ToDisplayString(SymbolDisplayFormat?)"/> when necessary
-/// for comparisons with <seealso cref="SyntaxNode"/>s.
+/// for comparisons with <seealso cref="SyntaxNode"/>s.</p>
 /// </summary>
 internal class KnownSymbols(WellKnownTypeProvider typeProvider)
 {
@@ -18,7 +18,5 @@ internal class KnownSymbols(WellKnownTypeProvider typeProvider)
     {
     }
 
-    protected WellKnownTypeProvider TypeProvider { get; } = typeProvider;
-
-    public INamedTypeSymbol? SystemRuntimeCachingMemoryCache => TypeProvider.GetOrCreateTypeByMetadataName("System.Runtime.Caching.MemoryCache");
+    public INamedTypeSymbol? SystemRuntimeCachingMemoryCache => typeProvider.GetOrCreateTypeByMetadataName("System.Runtime.Caching.MemoryCache");
 }
