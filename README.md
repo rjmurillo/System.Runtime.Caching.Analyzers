@@ -1,10 +1,10 @@
-# System.Runtime.Caching.Analyzers Rules
+# MemoryCache.Analyzers Rules
 
-This document provides details about the rules included in the [System.Runtime.Caching.Analyzers](https://github.com/rjmurillo/system.runtime.caching.analyzers) package.
+This document provides details about the rules included in the [MemoryCache.Analyzers](https://github.com/rjmurillo/memorycache.analyzers) package.
 
 ## Purpose
 
-System.Runtime.Caching.Analyzers is a collection of Roslyn analyzers that help developers identify and fix issues related to caching APIs in .NET applications. The analyzers focus on ensuring proper usage of caching APIs and promoting best practices for performance, maintainability, and compatibility.
+MemoryCache.Analyzers is a collection of Roslyn analyzers that help developers identify and fix issues related to caching APIs in .NET applications. The analyzers focus on ensuring proper usage of caching APIs and promoting best practices for performance, maintainability, and compatibility.
 
 ## Rule Categories
 
@@ -34,7 +34,7 @@ Each rule has a default severity level:
 Install the analyzers via NuGet:
 
 ```
-dotnet add package System.Runtime.Caching.Analyzers
+dotnet add package MemoryCache.Analyzers
 ```
 
 ### Configuration

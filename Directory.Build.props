@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <!-- Properties that need to be available early for NuGet pack targets -->
-  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'System.Runtime.Caching.Analyzers'">
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'MemoryCache.Analyzers'">
     <Description>Roslyn analyzer that helps to flag usage of .NET Framework bridge package for MemoryCache in .NET Core applications.</Description>
   </PropertyGroup>
 
