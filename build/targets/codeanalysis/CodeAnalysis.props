@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <!-- Properties for analyzer projects to resolve RS1036 -->
-  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'System.Runtime.Caching.Analyzers' or '$(MSBuildProjectName)' == 'System.Runtime.Caching.Analyzers.Test'">
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'MemoryCache.Analyzers' or '$(MSBuildProjectName)' == 'MemoryCache.Analyzers.Tests'">
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 

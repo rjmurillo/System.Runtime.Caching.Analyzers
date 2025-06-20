@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Immutable;
-using System.Linq;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
-
-namespace System.Runtime.Caching.Analyzers;
+namespace MemoryCache.Analyzers;
 
 /// <summary>
 /// Flags usage of System.Runtime.Caching.MemoryCache in .NET Core+ projects. Use Microsoft.Extensions.Caching.Memory instead.

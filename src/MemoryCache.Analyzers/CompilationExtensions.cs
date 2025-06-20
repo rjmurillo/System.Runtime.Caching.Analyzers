@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.CodeAnalysis;
-
-namespace System.Runtime.Caching.Analyzers;
+﻿namespace MemoryCache.Analyzers;
 
 internal static class CompilationExtensions
 {

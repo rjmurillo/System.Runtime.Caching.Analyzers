@@ -12,7 +12,7 @@ Configuration for AI behavior when interacting with Codacy's MCP Server
 - ALWAYS use:
  - provider: gh
  - organization: rjmurillo
- - repository: System.Runtime.Caching.Analyzers
+ - repository: MemoryCache.Analyzers
 - Avoid calling `git remote -v` unless really necessary
 
 ## After ANY successful `edit_file` or `reapply` operation

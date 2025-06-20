@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Testing;
-
-namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
+﻿namespace MemoryCache.Analyzers.Tests.Helpers;
 
 /// <summary>
 /// Provides a centralized, thread-safe catalog of commonly used <see cref="ReferenceAssemblies"/> configurations for analyzer tests.

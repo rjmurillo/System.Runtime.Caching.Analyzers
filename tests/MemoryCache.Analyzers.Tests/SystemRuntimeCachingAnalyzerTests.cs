@@ -1,9 +1,9 @@
-using Verifier = System.Runtime.Caching.Analyzers.Tests.Helpers.AnalyzerVerifier<System.Runtime.Caching.Analyzers.SystemRuntimeCachingAnalyzer>;
+using Verifier = MemoryCache.Analyzers.Tests.Helpers.AnalyzerVerifier<MemoryCache.Analyzers.SystemRuntimeCachingAnalyzer>;
 
-namespace System.Runtime.Caching.Analyzers.Tests;
+namespace MemoryCache.Analyzers.Tests;
 
 /// <summary>
-/// Unit tests for SystemRuntimeCachingAnalyzer.
+/// Unit tests for <see cref="SystemRuntimeCachingAnalyzer"/>.
 /// </summary>
 public class SystemRuntimeCachingAnalyzerTests
 {

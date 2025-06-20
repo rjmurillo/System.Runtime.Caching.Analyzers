@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace System.Runtime.Caching.Analyzers.Tests;
+namespace MemoryCache.Analyzers.Tests;
 
 public static class ModuleInitializer
 {

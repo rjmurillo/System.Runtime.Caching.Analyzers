@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
-
-namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
+﻿namespace MemoryCache.Analyzers.Tests.Helpers;
 
 internal static class AnalyzerVerifier<TAnalyzer>
     where TAnalyzer : DiagnosticAnalyzer, new()

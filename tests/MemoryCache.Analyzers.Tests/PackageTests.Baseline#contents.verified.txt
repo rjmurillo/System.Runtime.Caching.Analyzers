@@ -1,8 +1,8 @@
 ﻿/
+|-- MemoryCache.Analyzers.nuspec
 |-- README.md
-|-- System.Runtime.Caching.Analyzers.nuspec
 |-- analyzers
 |   |-- dotnet
 |   |   |-- cs
+|   |   |   |-- MemoryCache.Analyzers.dll
 |   |   |   |-- Microsoft.CodeAnalysis.AnalyzerUtilities.dll
-|   |   |   |-- System.Runtime.Caching.Analyzers.dll
