@@ -22,7 +22,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>A changelog is available at https://github.com/rjmurillo/memorycache.analyzers/releases</PackageReleaseNotes>
     <Copyright>2025 Richard Murillo</Copyright>
-    <PackageTags>caching, analyzers, dotnet, runtime</PackageTags>
+    <PackageTags>memorycache, System.Runtime.Caching, Microsoft.Extensions.Caching.Memory, caching, analyzers, dotnet, runtime</PackageTags>
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
