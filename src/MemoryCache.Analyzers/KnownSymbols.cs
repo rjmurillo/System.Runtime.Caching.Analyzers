@@ -1,7 +1,6 @@
 ﻿using Analyzer.Utilities;
-using Microsoft.CodeAnalysis;
 
-namespace System.Runtime.Caching.Analyzers;
+namespace MemoryCache.Analyzers;
 
 /// <summary>
 /// <p>Main entrypoint to access well-known symbols for the analyzer.

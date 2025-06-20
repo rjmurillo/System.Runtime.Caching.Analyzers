@@ -1,4 +1,4 @@
-﻿namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
+﻿namespace MemoryCache.Analyzers.Tests.Helpers;
 
 /// <summary>
 /// Provides extension methods for composing and enriching test data sets with reference assembly and namespace information

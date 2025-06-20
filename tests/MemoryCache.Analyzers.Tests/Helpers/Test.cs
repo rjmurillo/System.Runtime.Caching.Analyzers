@@ -1,9 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
-
-namespace System.Runtime.Caching.Analyzers.Tests.Helpers;
+﻿namespace MemoryCache.Analyzers.Tests.Helpers;
 
 /// <summary>
 /// An implementation of <see cref="CSharpCodeFixTest{TAnalyzer, TCodeFixProvider, TVerifier}"/> that sets default configuration

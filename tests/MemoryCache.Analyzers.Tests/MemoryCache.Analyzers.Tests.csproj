@@ -5,7 +5,7 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(RepoRoot)/src/System.Runtime.Caching.Analyzers/System.Runtime.Caching.Analyzers.csproj" AddPackageAsOutput="true" />
+    <ProjectReference Include="$(RepoRoot)/src/MemoryCache.Analyzers/MemoryCache.Analyzers.csproj" AddPackageAsOutput="true" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
     <PackageReference Include="GetPackFromProject">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

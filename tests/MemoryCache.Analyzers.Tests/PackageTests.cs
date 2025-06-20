@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 
-namespace System.Runtime.Caching.Analyzers.Tests;
+namespace MemoryCache.Analyzers.Tests;
 
 public class PackageTests
 {
     public static FileInfo Package { get; } = new FileInfo(Assembly.GetExecutingAssembly().Location)
         .Directory!
-        .GetFiles("System.Runtime.Caching.Analyzers*.nupkg")
+        .GetFiles("MemoryCache.Analyzers*.nupkg")
         .OrderByDescending(fileInfo => fileInfo.LastWriteTimeUtc)
         .First();
 

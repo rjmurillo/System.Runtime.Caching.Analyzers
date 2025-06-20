@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-
-namespace System.Runtime.Caching.Analyzers;
+﻿namespace MemoryCache.Analyzers;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="ITypeSymbol"/> instances in Roslyn analyzers.
